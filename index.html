@@ -53,7 +53,7 @@
         posts.reverse().forEach(post => {
             const postDiv = document.createElement('div');
             postDiv.className = 'post';
-            postDiv.innerText = post;
+            postDiv.innerHTML = `<strong>${post.title}</strong><br><em>${post.date}</em><br>${post.content}`;
             postsContainer.appendChild(postDiv);
         });
     }
