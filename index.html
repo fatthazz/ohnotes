@@ -44,7 +44,19 @@
 
 <script>
     const postsContainer = document.getElementById('postsContainer');
-    const posts = JSON.parse(localStorage.getItem('posts')) || [];
+    const oldPosts = JSON.parse(localStorage.getItem('posts')) || []; // Old posts as strings
+    let posts = []; // New posts array
+
+    // Check if old posts are strings and convert them
+    if (oldPosts.length > 0 && typeof oldPosts[0] === 'string') {
+        posts = oldPosts.map(post => ({
+            title: "Untitled", // Default title
+            date: new Date().toISOString().split('T')[0], // Default date
+            content: post
+        }));
+    } else {
+        posts = oldPosts; // Use existing structured posts
+    }
 
     // Display all posts in reverse order (newest first)
     if (posts.length === 0) {
@@ -53,7 +65,7 @@
         posts.reverse().forEach(post => {
             const postDiv = document.createElement('div');
             postDiv.className = 'post';
-            postDiv.innerHTML = `<strong>${post.title}</strong><br><em>${post.date}</em><br>${post.content}`;
+            postDiv.innerHTML = `<strong>${post.title || "Untitled"}</strong><br><em>${post.date || "No date provided"}</em><br>${post.content || "No content"}`;
             postsContainer.appendChild(postDiv);
         });
     }
