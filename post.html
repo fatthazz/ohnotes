@@ -56,8 +56,24 @@
 </form>
 
 <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const editIndex = urlParams.get('edit'); // Get index of post to edit if available
+
     if (!localStorage.getItem('loggedIn')) {
         window.location.href = 'login.html'; // Redirect to login if not logged in
+    }
+
+    // Load post data if in edit mode
+    if (editIndex !== null) {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        const postToEdit = posts[editIndex];
+
+        if (postToEdit) {
+            document.getElementById('postTitle').value = postToEdit.title;
+            document.getElementById('postDate').value = postToEdit.date;
+            document.getElementById('postContent').value = postToEdit.content;
+            document.querySelector('button[type="submit"]').innerText = "Update Post"; // Change button text
+        }
     }
 
     document.getElementById('postForm').addEventListener('submit', function(event) {
@@ -68,12 +84,20 @@
         const postContent = document.getElementById('postContent').value;
         const messageElement = document.getElementById('message');
 
-        // Save post to local storage
+        // Save or update post in local storage
         let posts = JSON.parse(localStorage.getItem('posts')) || [];
-        posts.push({ title: postTitle, date: postDate, content: postContent });
-        localStorage.setItem('posts', JSON.stringify(posts));
 
-        messageElement.innerText = "Post submitted successfully!";
+        if (editIndex !== null) {
+            // Update existing post
+            posts[editIndex] = { title: postTitle, date: postDate, content: postContent };
+            messageElement.innerText = "Post updated successfully!";
+        } else {
+            // Add new post
+            posts.push({ title: postTitle, date: postDate, content: postContent });
+            messageElement.innerText = "Post submitted successfully!";
+        }
+
+        localStorage.setItem('posts', JSON.stringify(posts));
         document.getElementById('postForm').reset(); // Clear all fields
     });
 </script>
