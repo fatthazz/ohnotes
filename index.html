@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ohnotes - Idk lol</title>
+    <title>Index Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,8 +69,11 @@
                 <strong>${post.title || "Untitled"}</strong><br>
                 <em>${post.date || "No date provided"}</em><br>
                 ${post.content || "No content"}<br>
-                <button onclick="deletePost(${index})">Delete</button>
             `;
+            // Check if user is logged in
+            if (localStorage.getItem('loggedIn')) {
+                postDiv.innerHTML += `<button onclick="deletePost(${index})">Delete</button>`;
+            }
             postsContainer.appendChild(postDiv);
         });
     }
