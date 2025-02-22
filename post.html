@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            margin: auto;
+            max-width: 400px;
+            width: 100%;
+        }
+        textarea {
+            margin: 10px 0;
+            padding: 10px;
+            width: calc(100% - 20px);
+            height: 100px;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align: center;">
+    <a href="index.html"><span style="color: #333300;"><strong>ohnotes</strong></span></a>
+</h1>
+<p style="text-align: center;"><em>Anything..</em></p>
+<hr />
+<form id="postForm">
+    <textarea id="postContent" placeholder="Write your post here..." required></textarea>
+    <button type="submit">Submit Post</button>
+    <p id="message"></p>
+</form>
+
+<script>
+    if (!localStorage.getItem('loggedIn')) {
+        window.location.href = 'login.html'; // Redirect to login if not logged in
+    }
+
+    document.getElementById('postForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const postContent = document.getElementById('postContent').value;
+        const messageElement = document.getElementById('message');
+
+        // Save post to local storage
+        let posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.push(postContent);
+        localStorage.setItem('posts', JSON.stringify(posts));
+
+        messageElement.innerText = "Post submitted successfully!";
+        document.getElementById('postContent').value = ''; // Clear the textarea
+    });
+</script>
+
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;"><a href="about.html">About&nbsp; </a>|<a href="project.html">Project</a></p>
+<hr />
+<p style="text-align: center;">IG : @ohraet</p>
+
+</body>
+</html>
