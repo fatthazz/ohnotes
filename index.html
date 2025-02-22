@@ -44,47 +44,18 @@
 
 <script>
     const postsContainer = document.getElementById('postsContainer');
-    const oldPosts = JSON.parse(localStorage.getItem('posts')) || []; // Old posts as strings
-    let posts = []; // New posts array
-
-    // Check if old posts are strings and convert them
-    if (oldPosts.length > 0 && typeof oldPosts[0] === 'string') {
-        posts = oldPosts.map(post => ({
-            title: "Untitled", // Default title
-            date: new Date().toISOString().split('T')[0], // Default date
-            content: post
-        }));
-    } else {
-        posts = oldPosts; // Use existing structured posts
-    }
+    const posts = JSON.parse(localStorage.getItem('posts')) || [];
 
     // Display all posts in reverse order (newest first)
     if (posts.length === 0) {
         postsContainer.innerHTML = "<p style='text-align: center;'>No posts available. Please log in to submit a post.</p>";
     } else {
-        posts.reverse().forEach((post, index) => {
+        posts.reverse().forEach(post => {
             const postDiv = document.createElement('div');
             postDiv.className = 'post';
-            postDiv.innerHTML = `
-                <strong>${post.title || "Untitled"}</strong><br>
-                <em>${post.date || "No date provided"}</em><br>
-                ${post.content || "No content"}<br>
-            `;
-            // Check if user is logged in
-            if (localStorage.getItem('loggedIn')) {
-                postDiv.innerHTML += `<button onclick="deletePost(${index})">Delete</button>`;
-            }
+            postDiv.innerText = post;
             postsContainer.appendChild(postDiv);
         });
-    }
-
-    function deletePost(index) {
-        // Remove the post from the array
-        posts.splice(index, 1);
-        // Update local storage
-        localStorage.setItem('posts', JSON.stringify(posts));
-        // Refresh the displayed posts
-        location.reload();
     }
 </script>
 
