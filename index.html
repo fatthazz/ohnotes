@@ -69,10 +69,15 @@
                 <strong>${post.title || "Untitled"}</strong><br>
                 <em>${post.date || "No date provided"}</em><br>
                 ${post.content || "No content"}<br>
-                <a href="post_submission.html?edit=${index}">Edit</a>
+                <button onclick="editPost(${index})">Edit</button>
             `;
             postsContainer.appendChild(postDiv);
         });
+    }
+
+    function editPost(index) {
+        localStorage.setItem('editIndex', index); // Store the index in local storage
+        window.location.href = 'post_submission.html'; // Redirect to the submission page
     }
 </script>
 
