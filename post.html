@@ -20,11 +20,10 @@
             max-width: 400px;
             width: 100%;
         }
-        textarea {
+        textarea, input[type="text"], input[type="date"] {
             margin: 10px 0;
             padding: 10px;
             width: calc(100% - 20px);
-            height: 100px;
         }
         button {
             padding: 10px;
@@ -49,6 +48,8 @@
 <p style="text-align: center;"><em>Anything..</em></p>
 <hr />
 <form id="postForm">
+    <input type="text" id="postTitle" placeholder="Post Title" required />
+    <input type="date" id="postDate" required />
     <textarea id="postContent" placeholder="Write your post here..." required></textarea>
     <button type="submit">Submit Post</button>
     <p id="message"></p>
@@ -62,16 +63,18 @@
     document.getElementById('postForm').addEventListener('submit', function(event) {
         event.preventDefault();
         
+        const postTitle = document.getElementById('postTitle').value;
+        const postDate = document.getElementById('postDate').value;
         const postContent = document.getElementById('postContent').value;
         const messageElement = document.getElementById('message');
 
         // Save post to local storage
         let posts = JSON.parse(localStorage.getItem('posts')) || [];
-        posts.push(postContent);
+        posts.push({ title: postTitle, date: postDate, content: postContent });
         localStorage.setItem('posts', JSON.stringify(posts));
 
         messageElement.innerText = "Post submitted successfully!";
-        document.getElementById('postContent').value = ''; // Clear the textarea
+        document.getElementById('postForm').reset(); // Clear all fields
     });
 </script>
 
