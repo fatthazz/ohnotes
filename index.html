@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ohnotes - Yeah!</title>
+    <title>Ohnotes - Idk lol</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,15 +69,19 @@
                 <strong>${post.title || "Untitled"}</strong><br>
                 <em>${post.date || "No date provided"}</em><br>
                 ${post.content || "No content"}<br>
-                <button onclick="editPost(${index})">Edit</button>
+                <button onclick="deletePost(${index})">Delete</button>
             `;
             postsContainer.appendChild(postDiv);
         });
     }
 
-    function editPost(index) {
-        localStorage.setItem('editIndex', index); // Store the index in local storage
-        window.location.href = 'post_submission.html'; // Redirect to the submission page
+    function deletePost(index) {
+        // Remove the post from the array
+        posts.splice(index, 1);
+        // Update local storage
+        localStorage.setItem('posts', JSON.stringify(posts));
+        // Refresh the displayed posts
+        location.reload();
     }
 </script>
 
