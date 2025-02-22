@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            margin: auto;
+            max-width: 400px;
+            width: 100%;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: calc(100% - 20px);
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align: center;">
+    <a href="index.html"><span style="color: #333300;"><strong>ohnotes</strong></span></a>
+</h1>
+<p style="text-align: center;"><em>Anything..</em></p>
+<hr />
+<form id="loginForm">
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+    <p id="message"></p>
+</form>
+
+<script>
+    const correctUsername = "Fatihah";
+    const correctPassword = "Hazz182020#";
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const usernameInput = document.getElementById('username').value;
+        const passwordInput = document.getElementById('password').value;
+        const messageElement = document.getElementById('message');
+
+        if (usernameInput === correctUsername && passwordInput === correctPassword) {
+            localStorage.setItem('loggedIn', 'true');
+            window.location.href = 'post.html'; // Redirect to post page
+        } else {
+            messageElement.innerText = "Incorrect username or password.";
+        }
+    });
+</script>
+
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;"><a href="about.html">About&nbsp; </a>|<a href="project.html">Project</a></p>
+<hr />
+<p style="text-align: center;">IG : @ohraet</p>
+
+</body>
+</html>
