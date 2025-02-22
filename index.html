@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Page</title>
+    <title>Ohnotes - Yeah!</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,10 +62,15 @@
     if (posts.length === 0) {
         postsContainer.innerHTML = "<p style='text-align: center;'>No posts available. Please log in to submit a post.</p>";
     } else {
-        posts.reverse().forEach(post => {
+        posts.reverse().forEach((post, index) => {
             const postDiv = document.createElement('div');
             postDiv.className = 'post';
-            postDiv.innerHTML = `<strong>${post.title || "Untitled"}</strong><br><em>${post.date || "No date provided"}</em><br>${post.content || "No content"}`;
+            postDiv.innerHTML = `
+                <strong>${post.title || "Untitled"}</strong><br>
+                <em>${post.date || "No date provided"}</em><br>
+                ${post.content || "No content"}<br>
+                <a href="post_submission.html?edit=${index}">Edit</a>
+            `;
             postsContainer.appendChild(postDiv);
         });
     }
