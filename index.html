@@ -46,11 +46,11 @@
     const postsContainer = document.getElementById('postsContainer');
     const posts = JSON.parse(localStorage.getItem('posts')) || [];
 
-    // Display all posts
+    // Display all posts in reverse order (newest first)
     if (posts.length === 0) {
         postsContainer.innerHTML = "<p style='text-align: center;'>No posts available. Please log in to submit a post.</p>";
     } else {
-        posts.forEach(post => {
+        posts.reverse().forEach(post => {
             const postDiv = document.createElement('div');
             postDiv.className = 'post';
             postDiv.innerText = post;
