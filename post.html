@@ -3,35 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Submission</title>
+    <title>Index Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             padding: 20px;
         }
-        form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        h1 {
             text-align: center;
-            margin: auto;
-            max-width: 400px;
-            width: 100%;
         }
-        textarea, input[type="text"], input[type="date"] {
+        .post {
+            background: #fff;
+            padding: 10px;
             margin: 10px 0;
-            padding: 10px;
-            width: calc(100% - 20px);
-        }
-        button {
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
             border-radius: 5px;
-            width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
         }
         @media (max-width: 480px) {
             h1 {
@@ -42,64 +33,52 @@
 </head>
 <body>
 
-<h1 style="text-align: center;">
-    <a href="index.html"><span style="color: #333300;"><strong>ohnotes</strong></span></a>
-</h1>
+<h1><a href="index.html"><span style="color: #333300;"><strong>ohnotes</strong></span></a></h1>
 <p style="text-align: center;"><em>Anything..</em></p>
 <hr />
-<form id="postForm">
-    <input type="text" id="postTitle" placeholder="Post Title" required />
-    <input type="date" id="postDate" required />
-    <textarea id="postContent" placeholder="Write your post here..." required></textarea>
-    <button type="submit">Submit Post</button>
-    <p id="message"></p>
-</form>
+<div id="postsContainer"></div>
+
+<div class="footer">
+    <a href="login.html">Login</a>
+</div>
 
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const editIndex = urlParams.get('edit'); // Get index of post to edit if available
+    const postsContainer = document.getElementById('postsContainer');
+    const oldPosts = JSON.parse(localStorage.getItem('posts')) || []; // Old posts as strings
+    let posts = []; // New posts array
 
-    if (!localStorage.getItem('loggedIn')) {
-        window.location.href = 'login.html'; // Redirect to login if not logged in
+    // Check if old posts are strings and convert them
+    if (oldPosts.length > 0 && typeof oldPosts[0] === 'string') {
+        posts = oldPosts.map(post => ({
+            title: "Untitled", // Default title
+            date: new Date().toISOString().split('T')[0], // Default date
+            content: post
+        }));
+    } else {
+        posts = oldPosts; // Use existing structured posts
     }
 
-    // Load post data if in edit mode
-    if (editIndex !== null) {
-        const posts = JSON.parse(localStorage.getItem('posts')) || [];
-        const postToEdit = posts[editIndex];
-
-        if (postToEdit) {
-            document.getElementById('postTitle').value = postToEdit.title;
-            document.getElementById('postDate').value = postToEdit.date;
-            document.getElementById('postContent').value = postToEdit.content;
-            document.querySelector('button[type="submit"]').innerText = "Update Post"; // Change button text
-        }
+    // Display all posts in reverse order (newest first)
+    if (posts.length === 0) {
+        postsContainer.innerHTML = "<p style='text-align: center;'>No posts available. Please log in to submit a post.</p>";
+    } else {
+        posts.reverse().forEach((post, index) => {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post';
+            postDiv.innerHTML = `
+                <strong>${post.title || "Untitled"}</strong><br>
+                <em>${post.date || "No date provided"}</em><br>
+                ${post.content || "No content"}<br>
+                <button onclick="editPost(${index})">Edit</button>
+            `;
+            postsContainer.appendChild(postDiv);
+        });
     }
 
-    document.getElementById('postForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        const postTitle = document.getElementById('postTitle').value;
-        const postDate = document.getElementById('postDate').value;
-        const postContent = document.getElementById('postContent').value;
-        const messageElement = document.getElementById('message');
-
-        // Save or update post in local storage
-        let posts = JSON.parse(localStorage.getItem('posts')) || [];
-
-        if (editIndex !== null) {
-            // Update existing post
-            posts[editIndex] = { title: postTitle, date: postDate, content: postContent };
-            messageElement.innerText = "Post updated successfully!";
-        } else {
-            // Add new post
-            posts.push({ title: postTitle, date: postDate, content: postContent });
-            messageElement.innerText = "Post submitted successfully!";
-        }
-
-        localStorage.setItem('posts', JSON.stringify(posts));
-        document.getElementById('postForm').reset(); // Clear all fields
-    });
+    function editPost(index) {
+        localStorage.setItem('editIndex', index); // Store the index in local storage
+        window.location.href = 'post_submission.html'; // Redirect to the submission page
+    }
 </script>
 
 <p style="text-align: center;">&nbsp;</p>
